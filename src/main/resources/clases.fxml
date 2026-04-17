@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="20" style="-fx-background-color: #2c3e50;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.crud.Controller.MainController">
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <Label style="-fx-font-size: 28px; -fx-text-fill: gold; -fx-font-weight: bold;" text="World of Warcraft" />
+    <Label style="-fx-text-fill: white;" text="Selecciona tu destino:" />
+
+    <HBox alignment="CENTER" spacing="15">
+        <Button onAction="#onSeleccionarRol" prefHeight="100" prefWidth="100" style="-fx-background-color: #e74c3c;" text="TANK" textFill="WHITE" />
+        <Button onAction="#onSeleccionarRol" prefHeight="100" prefWidth="100" style="-fx-background-color: #2ecc71;" text="HEALER" textFill="WHITE" />
+        <Button onAction="#onSeleccionarRol" prefHeight="100" prefWidth="100" style="-fx-background-color: #3498db;" text="DPS" textFill="WHITE" />
+    </HBox>
+
+    <Label fx:id="lblStatus" style="-fx-text-fill: #bdc3c7;" text="Esperando selección..." />
+</VBox>
