@@ -8,7 +8,7 @@
 
     <Label text="Lista de Clases" style="-fx-font-size: 24; -fx-text-fill: white;"/>
 
-    <TableView fx:id="tablaEspecs" VBox.vgrow="ALWAYS">
+    <TableView fx:id="tablaEspecs" onMouseClicked="#onFilaSeleccionada" VBox.vgrow="ALWAYS">
         <columns>
             <TableColumn fx:id="colClase" text="CLASE" />
             <TableColumn fx:id="colEspec" text="ESPECIALIZACIÓN" />
@@ -17,6 +17,7 @@
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
         </columnResizePolicy>
+
     </TableView>
 
     <Button text="Volver al Menú" onAction="#volverMenu" />

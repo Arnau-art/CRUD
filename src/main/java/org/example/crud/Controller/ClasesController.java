@@ -5,10 +5,12 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import org.example.crud.Entity.Espec;
 import org.example.crud.Service.WoWService;
@@ -27,7 +29,10 @@ public class ClasesController {
     @FXML private TableColumn<Espec, String> colDesc;
 
     private final WoWService wowService;
-    private final ConfigurableApplicationContext context; // Necesario para volver al menú
+    private final ConfigurableApplicationContext context;
+
+    // VARIABLE CRÍTICA: Guarda el rol actual para no perderlo al ir y volver
+    private String rolActual;
 
     public ClasesController(WoWService wowService, ConfigurableApplicationContext context) {
         this.wowService = wowService;
@@ -36,7 +41,7 @@ public class ClasesController {
 
     @FXML
     public void initialize() {
-        // Configuramos cómo se ven las columnas
+        // Configuración de columnas
         colEspec.setCellValueFactory(new PropertyValueFactory<>("name"));
         colDesc.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
         colClase.setCellValueFactory(cellData ->
@@ -44,26 +49,41 @@ public class ClasesController {
                         cellData.getValue().getClase().getName() : "N/A"));
     }
 
-    // Este es el método que llama el MenuController
+    // Método que llama el Menú y el DetalleController
     public void actualizarTablaPorRol(String rol) {
-        String filtro = rol;
-        // Ajuste por si en tu DB pusiste TANK en vez de TANQUE
-        if (rol.equalsIgnoreCase("TANQUE")) filtro = "TANK";
+        if (rol == null) return;
+        this.rolActual = rol;
+
+        String filtro = rol.trim().toUpperCase();
+        // Ajuste por si en tu DB el rol se llama TANK en vez de TANQUE
+        if (filtro.equals("TANQUE")) filtro = "TANK";
 
         List<Espec> lista = wowService.getEspecsPorRol(filtro);
         tablaEspecs.setItems(FXCollections.observableArrayList(lista));
     }
 
-    // EL MÉTODO QUE FALTABA: Para volver a la pantalla principal
     @FXML
-    private void volverMenu(ActionEvent event) {
+    private void onFilaSeleccionada(MouseEvent event) {
+        // Detecta doble clic para abrir la imagen
+        if (event.getClickCount() == 2) {
+            Espec seleccionada = tablaEspecs.getSelectionModel().getSelectedItem();
+            if (seleccionada != null) {
+                irADetalle(seleccionada);
+            }
+        }
+    }
+
+    private void irADetalle(Espec espec) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/DetalleView.fxml"));
             loader.setControllerFactory(context::getBean);
             Parent root = loader.load();
 
-            // Obtenemos la ventana actual a través del botón que pulsamos
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            DetalleController controller = loader.getController();
+            // Le pasamos el objeto y el rol que estamos viendo ahora
+            controller.mostrarDetalle(espec, this.rolActual);
+
+            Stage stage = (Stage) tablaEspecs.getScene().getWindow();
             stage.setScene(new Scene(root, 1000, 700));
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,8 +91,15 @@ public class ClasesController {
     }
 
     @FXML
-    private void onExportarCsv() {
-        // Aquí iría tu lógica de exportar que ya tenías
-        System.out.println("Exportando a CSV...");
+    private void volverMenu(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/MenuView.fxml"));
+            loader.setControllerFactory(context::getBean);
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root, 1000, 700));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
