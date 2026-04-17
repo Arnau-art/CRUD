@@ -7,10 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface RolRepository extends JpaRepository<Rol, Long> {
-
-    /**
-     * Busca un rol por su nombre exacto (ej: "Tank", "Healer", "DPS").
-     * Usamos Optional para evitar errores de NullPointerException si el rol no existe.
-     */
+    // Este te servirá por si alguna vez quieres buscar un rol por su nombre
+    // en lugar de por ID desde tu Service.
     Optional<Rol> findByNombre(String nombre);
 }

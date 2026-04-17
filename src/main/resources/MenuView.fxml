@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="40" prefHeight="700" prefWidth="1000"
+      style="-fx-background-color: #1a1a1a; -fx-padding: 50;"
+      xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.crud.Controller.MenuController">
+
+    <Label text="GESTIÓN DE CLASES WOW" style="-fx-text-fill: #f1c40f; -fx-font-size: 40; -fx-font-weight: bold;" />
+    <Label text="¿Qué rol quieres consultar?" style="-fx-text-fill: white; -fx-font-size: 20;" />
+
+    <HBox alignment="CENTER" spacing="30">
+        <Button fx:id="btnTanque" onAction="#seleccionarRol" prefHeight="180" prefWidth="220" text="TANQUE"
+                style="-fx-background-color: #721c24; -fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;"/>
+
+        <Button fx:id="btnHealer" onAction="#seleccionarRol" prefHeight="180" prefWidth="220" text="HEALER"
+                style="-fx-background-color: #155724; -fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;"/>
+
+        <Button fx:id="btnDps" onAction="#seleccionarRol" prefHeight="180" prefWidth="220" text="DPS"
+                style="-fx-background-color: #0c5460; -fx-text-fill: white; -fx-font-size: 22; -fx-font-weight: bold; -fx-background-radius: 20; -fx-cursor: hand;"/>
+    </HBox>
+</VBox>
