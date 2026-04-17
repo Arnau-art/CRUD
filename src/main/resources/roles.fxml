@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.crud.controller.RolesController">
+
+    enter>
+    <VBox>
+        <Label text="⚔️ Roles" style="-fx-font-size: 20px;"/>
+
+        <ListView fx:id="listRoles">
+            <!-- Se llena dinámicamente -->
+        </ListView>
+
+        <ListView fx:id="listSpecs">
+            <!-- Specs del rol seleccionado -->
+        </ListView>
+    </VBox>
+</center>
+
+<right>
+<VBox>
+    <Button fx:id="btnGestion" text="Gestionar Specs →"/>
+    <Button fx:id="btnVolver" text="← Volver"/>
+</VBox>
+</right>
+        </BorderPane>
