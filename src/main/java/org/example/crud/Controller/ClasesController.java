@@ -56,7 +56,7 @@ public class ClasesController {
 
         String filtro = rol.trim().toUpperCase();
         // Ajuste por si en tu DB el rol se llama TANK en vez de TANQUE
-        if (filtro.equals("TANQUE")) filtro = "TANK";
+
 
         List<Espec> lista = wowService.getEspecsPorRol(filtro);
         tablaEspecs.setItems(FXCollections.observableArrayList(lista));

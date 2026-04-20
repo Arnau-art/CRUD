@@ -38,11 +38,11 @@ public class DetalleController {
 
         // 1. Configurar textos
         lblTitulo.setText(espec.getName().toUpperCase());
-        txtDescripcionLarga.setText(espec.getDescripcion());
+        txtDescripcionLarga.setText(espec.getDescripcion2());
 
         // 2. Intentar cargar la imagen
         try {
-            String nombreClase = espec.getClase().getName().toLowerCase().trim();
+            String nombreClase = espec.getName().toLowerCase().trim();
             String nombreImg = nombreClase + ".png";
             var resource = getClass().getResource("/images/" + nombreImg);
 

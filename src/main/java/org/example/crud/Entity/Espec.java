@@ -9,6 +9,7 @@ public class Espec {
     private Long id;
     private String name;
     private String descripcion;
+    private String descripcion2;
     private String rolTipo;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,4 +33,6 @@ public class Espec {
     public void setClase(Clase clase) { this.clase = clase; }
     public Rol getRolEntity() { return rolEntity; }
     public void setRolEntity(Rol rolEntity) { this.rolEntity = rolEntity; }
+    public String getDescripcion2() { return descripcion2; }
+    public void setDescripcion2(String descripcion2) { this.descripcion2 = descripcion2; }
 }
