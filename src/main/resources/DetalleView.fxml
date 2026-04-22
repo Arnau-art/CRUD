@@ -26,7 +26,7 @@
             <TextArea fx:id="txtDescripcionLarga"
                       editable="false"
                       wrapText="true"
-                      prefRowCount="10"
+                      prefRowCount="4"
                       style="-fx-control-inner-background: #2c3e50; -fx-text-fill: white;" />
         </VBox>
     </HBox>
