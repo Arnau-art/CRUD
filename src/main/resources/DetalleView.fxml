@@ -31,6 +31,11 @@
         </VBox>
     </HBox>
 
+    <Button fx:id="btnJugadores"
+            onAction="#abrirVentanaJugadores"
+            text="Jugadores"
+            style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-cursor: hand;" />
+
     <Button onAction="#volverALista" text="Volver a la Lista"
             style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20; -fx-cursor: hand;" />
 

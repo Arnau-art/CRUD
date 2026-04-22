@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.crud.Controller.JugadoresController"
+      prefWidth="900" prefHeight="600"
+      spacing="10"
+      style="-fx-padding: 10;">
+    <!-- Título -->
+    <Label text="Jugadores de la clase" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- Campo de clase -->
+    <HBox spacing="10">
+        <Label text="Clase:" />
+        <TextField fx:id="txtClase" editable="false" prefWidth="150"/>
+    </HBox>
+
+    <!-- Formulario de nuevo jugador -->
+    <TitledPane text="Añadir jugador" collapsible="false">
+        <GridPane hgap="10" vgap="10">
+            <columnConstraints>
+                <ColumnConstraints prefWidth="120"/>
+                <ColumnConstraints hgrow="SOMETIMES"/>
+            </columnConstraints>
+
+            <rowConstraints>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+                <RowConstraints/>
+            </rowConstraints>
+
+            <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <TextField fx:id="txtNombre" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+            <Label text="Reino:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <TextField fx:id="txtReino" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+            <Label text="Región:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <TextField fx:id="txtRegion" GridPane.columnIndex="1" GridPane.rowIndex="2" promptText="EU, US, KR…"/>
+
+            <Label text="Especialización:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <TextField fx:id="txtEspecializacion" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                       editable="false" style="-fx-text-fill: #555;"/>
+
+            <Label text="Puntuación (IO):" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <TextField fx:id="txtPuntuacion" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                       editable="false" style="-fx-text-fill: #555;"/>
+
+            <Button text="Cargar desde Raider.IO" fx:id="btnCargarRaiderIO"
+                    GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+            <Button text="Añadir" fx:id="btnAñadir"
+                    GridPane.columnIndex="1" GridPane.rowIndex="6"
+                    styleClass="primary"/>
+        </GridPane>
+    </TitledPane>
+
+    <!-- Tabla de jugadores -->
+    <Label text="Jugadores cargados:" />
+    <TableView fx:id="tblJugadores" prefHeight="300">
+        <columns>
+            <TableColumn fx:id="colNombre" text="Nombre" prefWidth="150"/>
+            <TableColumn fx:id="colReino" text="Reino" prefWidth="120"/>
+            <TableColumn fx:id="colClase" text="Clase" prefWidth="120"/>
+            <TableColumn fx:id="colEspecializacion" text="Especialización" prefWidth="150"/>
+            <TableColumn fx:id="colPuntuacion" text="Puntuación" prefWidth="100"/>
+        </columns>
+    </TableView>
+
+    <!-- Botones inferiores -->
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Exportar a CSV" fx:id="btnExportarCSV"/>
+    </HBox>
+</VBox>

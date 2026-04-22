@@ -7,8 +7,8 @@ import java.util.List;
 
 @Service
 public class WoWService {
-    private final EspecRepository especRepository;
-    public WoWService(EspecRepository especRepository) { this.especRepository = especRepository; }
+    private final org.example.crud.Repository.EspecRepository especRepository;
+    public WoWService(org.example.crud.Repository.EspecRepository especRepository) { this.especRepository = especRepository; }
 
     public List<Espec> getEspecsPorRol(String rol) { return especRepository.findByRolEntity_Nombre(rol); }
 
