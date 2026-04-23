@@ -50,7 +50,7 @@
             <TextField fx:id="txtEspecializacion" GridPane.columnIndex="1" GridPane.rowIndex="3"
                        editable="false" style="-fx-text-fill: #555;"/>
 
-            <Label text="Puntuación (IO):" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+            <Label text="Puntos de logro:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
             <TextField fx:id="txtPuntuacion" GridPane.columnIndex="1" GridPane.rowIndex="4"
                        editable="false" style="-fx-text-fill: #555;"/>
 

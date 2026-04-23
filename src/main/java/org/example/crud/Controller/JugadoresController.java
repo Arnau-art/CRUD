@@ -2,7 +2,6 @@ package org.example.crud.Controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,6 +23,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class JugadoresController {
@@ -143,7 +143,8 @@ public class JugadoresController {
             String url = "https://raider.io/api/v1/characters/profile?region="
                     + region.toLowerCase()
                     + "&realm=" + reinoCodificado
-                    + "&name=" + nombreCodificado;
+                    + "&name=" + nombreCodificado
+                    + "&fields=achievement_points";   // solo traemos achievement_points
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -158,18 +159,27 @@ public class JugadoresController {
                 return;
             }
 
-            RaiderIoData data = parseRaiderIoResponse(response.body());
+            String json = response.body();
+            RaiderIoData data = parseRaiderIoResponse(json);
+            String especializacionTraducida = traducirSpec(data.especializacion);
+
+            // Si los puntos de logro son 0, mostramos el JSON para depurar
+            if (data.achievementPoints == 0) {
+                mostrarInfo("Puntos de logro 0 - JSON Raider.IO",
+                        "Raider.IO devolvió puntos de logro 0.\n\nJSON completo:\n" + json);
+            }
 
             if (especializacionEntrada != null && !especializacionEntrada.isBlank()) {
-                if (data.especializacion == null || !data.especializacion.equalsIgnoreCase(especializacionEntrada)) {
+                String esperada = especializacionEntrada.trim();
+                if (!especializacionTraducida.equalsIgnoreCase(esperada) && !data.especializacion.equalsIgnoreCase(esperada)) {
                     mostrarError("Especialización incorrecta",
-                            "Especialización Raider.IO: " + data.especializacion + "\nEsperada: " + especializacionEntrada);
+                            "Especialización Raider.IO: " + especializacionTraducida + " (" + data.especializacion + ")\nEsperada: " + especializacionEntrada);
                     return;
                 }
             }
 
-            txtEspecializacion.setText(data.especializacion == null ? "" : data.especializacion);
-            txtPuntuacion.setText(String.valueOf(data.ioScore));
+            txtEspecializacion.setText(especializacionTraducida);
+            txtPuntuacion.setText(String.valueOf(data.achievementPoints));
 
             mostrarInfo("OK", "Datos cargados desde Raider.IO.");
         } catch (Exception ex) {
@@ -186,8 +196,46 @@ public class JugadoresController {
             especializacion = root.path("class").asText(null);
         }
 
-        int ioScore = root.path("mythic_plus_scores").path("all").asInt(0);
-        return new RaiderIoData(especializacion, ioScore);
+        // TOMAMOS achievement_points en vez de mythic_plus_scores
+        int points = root.path("achievement_points").asInt(0);
+        return new RaiderIoData(especializacion, 0, points); // ioScore ahora se ignora, usamos achievementPoints
+    }
+
+    private String traducirSpec(String spec) {
+        if (spec == null || spec.isBlank()) return "";
+
+        Map<String, String> traducciones = Map.ofEntries(
+                Map.entry("arcane", "Arcano"),
+                Map.entry("fire", "Fuego"),
+                Map.entry("frost", "Escarcha"),
+                Map.entry("holy", "Sagrado"),
+                Map.entry("protection", "Protección"),
+                Map.entry("retribution", "Reprensión"),
+                Map.entry("restoration", "Restauración"),
+                Map.entry("balance", "Equilibrio"),
+                Map.entry("feral", "Feral"),
+                Map.entry("guardian", "Guardián"),
+                Map.entry("demonology", "Demonología"),
+                Map.entry("affliction", "Aflicción"),
+                Map.entry("destruction", "Destrucción"),
+                Map.entry("assassination", "Asesinato"),
+                Map.entry("subtlety", "Sutileza"),
+                Map.entry("outlaw", "Forajido"),
+                Map.entry("windwalker", "Viajero del viento"),
+                Map.entry("brewmaster", "Maestro cervecero"),
+                Map.entry("mistweaver", "Tejedor de niebla"),
+                Map.entry("arms", "Armas"),
+                Map.entry("fury", "Furia"),
+                Map.entry("blood", "Sangre"),
+                Map.entry("unholy", "Profano"),
+                Map.entry("preservation", "Preservación"),
+                Map.entry("devastation", "Devastación"),
+                Map.entry("augmentation", "Aumento"),
+                Map.entry("havoc", "Devastación")
+        );
+
+        String clave = spec.trim().toLowerCase();
+        return traducciones.getOrDefault(clave, spec);
     }
 
     private void exportarCSV() {
@@ -234,7 +282,18 @@ public class JugadoresController {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);
+
+        if (mensaje.length() > 400) {
+            alert.setContentText(mensaje.substring(0, 397) + "...");
+            TextArea ta = new TextArea(mensaje);
+            ta.setEditable(false);
+            ta.setPrefRowCount(15);
+            ta.setPrefColumnCount(60);
+            alert.getDialogPane().setExpandableContent(ta);
+        } else {
+            alert.setContentText(mensaje);
+        }
+
         alert.showAndWait();
     }
 
@@ -243,13 +302,16 @@ public class JugadoresController {
         return value.replace(",", " ");
     }
 
+    // Cambiamos RaiderIoData para que contenga achievement_points en lugar de ioScore
     private static class RaiderIoData {
         final String especializacion;
         final int ioScore;
+        final int achievementPoints;
 
-        RaiderIoData(String especializacion, int ioScore) {
+        RaiderIoData(String especializacion, int ioScore, int achievementPoints) {
             this.especializacion = especializacion;
             this.ioScore = ioScore;
+            this.achievementPoints = achievementPoints;
         }
     }
 }
