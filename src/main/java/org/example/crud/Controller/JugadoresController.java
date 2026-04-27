@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class JugadoresController {
+public class  JugadoresController {
 
     @FXML private TableView<Jugador> tblJugadores;
     @FXML private TableColumn<Jugador, String> colNombre;
